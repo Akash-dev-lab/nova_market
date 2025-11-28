@@ -1,0 +1,203 @@
+.header {
+	background: rgba(255, 255, 255, 0.98);
+	padding: 16px 0;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+
+.headerContent {
+	max-width: 100%;
+	width: 80%;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	padding: 0 40px;
+	justify-content: space-between;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-shrink: 0;
+	cursor: pointer;
+}
+
+.logoCircle {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.logoText {
+	font-size: 18px;
+	font-weight: 700;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.searchBar {
+	flex: 1;
+	max-width: 500px;
+	display: flex;
+	align-items: center;
+	background: #f3f4f6;
+	border-radius: 24px;
+	padding: 10px 18px;
+	border: 2px solid transparent;
+	transition: all 0.3s ease;
+}
+
+.searchBar:focus-within {
+	border-color: #667eea;
+	box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.searchInput {
+	flex: 1;
+	border: none;
+	background: transparent;
+	outline: none;
+	font-size: 14px;
+	color: #1f2937;
+}
+
+.searchInput::placeholder {
+	color: #9ca3af;
+}
+
+.searchBtn {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+	transition: transform 0.2s ease;
+	margin-left: 8px;
+}
+
+.searchBtn:hover {
+	transform: scale(1.15);
+}
+
+.headerIcons {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+}
+
+.iconBtn {
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: none;
+	background: #f3f4f6;
+	cursor: pointer;
+	font-size: 20px;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.iconBtn:hover {
+	background: #e5e7eb;
+	transform: scale(1.08);
+}
+
+@media (max-width: 1200px) {
+	.headerContent {
+		gap: 20px;
+		padding: 0 32px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.headerContent {
+		gap: 16px;
+		padding: 0 24px;
+	}
+
+	.searchBar {
+		max-width: 350px;
+	}
+
+	.logoText {
+		display: none;
+	}
+}
+
+@media (max-width: 768px) {
+	.header {
+		padding: 12px 0;
+	}
+
+	.headerContent {
+		gap: 12px;
+		padding: 0 16px;
+	}
+
+	.logo {
+		gap: 8px;
+	}
+
+	.logoCircle {
+		width: 36px;
+		height: 36px;
+	}
+
+	.searchBar {
+		max-width: 200px;
+		padding: 8px 14px;
+	}
+
+	.searchInput {
+		font-size: 12px;
+	}
+
+	.iconBtn {
+		width: 40px;
+		height: 40px;
+		font-size: 18px;
+	}
+
+	.headerIcons {
+		gap: 8px;
+		display: none;
+	}
+}
+
+@media (max-width: 480px) {
+	.header {
+		padding: 10px 0;
+	}
+
+	.headerContent {
+		gap: 8px;
+		padding: 0 12px;
+	}
+
+	.logo {
+		gap: 6px;
+	}
+
+	.logoCircle {
+		width: 32px;
+		height: 32px;
+	}
+
+	.searchBar {
+		max-width: none;
+		flex: 1;
+		padding: 8px 12px;
+	}
+
+	.searchInput {
+		font-size: 12px;
+	}
+}

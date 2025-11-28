@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { login } from '../../utils/authApi'
+import { login } from '../../../utils/authApi'
 import styles from '../login.module.css'
 
 
