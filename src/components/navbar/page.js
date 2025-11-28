@@ -18,6 +18,7 @@ export default function Navbar() {
 				setUser(userData?.user || userData)
 			} catch (err) {
 				console.log('User not logged in')
+				setUser(null)
 			} finally {
 				setLoading(false)
 			}
@@ -25,16 +26,20 @@ export default function Navbar() {
 		fetchUser()
 	}, [])
 
-    async function handleLogout() {
-    try {
-        await logout();
-        setUser(null);
-        router.push('/auth/login');
-    } catch (err) {
-        console.log("Logout failed:", err);
-    }
-}
+	async function handleLogout() {
+		try {
+			await logout()
+			setUser(null)
+			setShowDropdown(false)
+			router.push('/')
+		} catch (err) {
+			console.log("Logout failed:", err)
+		}
+	}
 
+	const handleProfileClick = () => {
+		setShowDropdown(!showDropdown)
+	}
 
 	const getUserInitial = () => {
 		if (user?.username?.firstName) {
@@ -76,7 +81,7 @@ export default function Navbar() {
 					<div className={styles.profileContainer}>
 						<button 
 							className={styles.profileBtn}
-							onClick={() => setShowDropdown(!showDropdown)}
+							onClick={handleProfileClick}
 							title="Profile"
 						>
 							{loading ? (
@@ -88,32 +93,59 @@ export default function Navbar() {
 							)}
 						</button>
 
-						{user && showDropdown && (
+						{showDropdown && (
 							<div className={styles.dropdown}>
-								<div className={styles.dropdownHeader}>
-									<div className={styles.userInfo}>
-										<p className={styles.userName}>{getUserName()}</p>
-										<p className={styles.userEmail}>{user.email}</p>
+								{user ? (
+									<>
+										<div className={styles.dropdownHeader}>
+											<div className={styles.userInfo}>
+												<p className={styles.userName}>{getUserName()}</p>
+												<p className={styles.userEmail}>{user.email}</p>
+											</div>
+										</div>
+
+										<div className={styles.dropdownMenu}>
+											<button className={styles.menuItem} onClick={() => router.push('/orders')}>
+												📦 Orders
+											</button>
+											<button className={styles.menuItem} onClick={() => router.push('/manage-address')}>
+												📍 Manage Address
+											</button>
+											<button className={styles.menuItem} onClick={() => router.push('/account-settings')}>
+												⚙️ Account Settings
+											</button>
+										</div>
+
+										<div className={styles.dropdownFooter}>
+											<button className={styles.logoutBtn} onClick={handleLogout}>
+												🚪 Logout
+											</button>
+										</div>
+									</>
+								) : (
+									<div className={styles.authSection}>
+										<p className={styles.authMessage}>Welcome to Nova Market</p>
+										<span className='text-black text-center'>Are you a buyer or seller ?</span>
+										<button 
+											className={styles.loginBtn}
+											onClick={() => {
+												router.push('/auth/login')
+												setShowDropdown(false)
+											}}
+										>
+											🔑 Login
+										</button>
+										<button 
+											className={styles.signupBtn}
+											onClick={() => {
+												router.push('/auth/signup')
+												setShowDropdown(false)
+											}}
+										>
+											✍️ Sign Up
+										</button>
 									</div>
-								</div>
-
-								<div className={styles.dropdownMenu}>
-									<button className={styles.menuItem} onClick={() => router.push('/orders')}>
-										📦 Orders
-									</button>
-									<button className={styles.menuItem} onClick={() => router.push('/manage-address')}>
-										📍 Manage Address
-									</button>
-									<button className={styles.menuItem} onClick={() => router.push('/account-settings')}>
-										⚙️ Account Settings
-									</button>
-								</div>
-
-								<div className={styles.dropdownFooter}>
-									<button className={styles.logoutBtn} onClick={handleLogout}>
-										🚪 Logout
-									</button>
-								</div>
+								)}
 							</div>
 						)}
 					</div>

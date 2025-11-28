@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { register } from '../../utils/authApi'
+import { register } from '../../../utils/authApi'
 import styles from '../signup.module.css'
 
 

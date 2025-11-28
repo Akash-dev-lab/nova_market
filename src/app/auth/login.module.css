@@ -114,6 +114,7 @@
 .input {
 	padding: 12px 16px;
 	border: 2px solid #e5e7eb;
+	color: #1f2937;
 	border-radius: 8px;
 	font-size: 14px;
 	transition: all 0.3s ease;
