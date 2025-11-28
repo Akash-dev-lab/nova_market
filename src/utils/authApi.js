@@ -49,3 +49,14 @@ export async function getCurrentUser() {
 		return null;
 	}
 }
+
+// LOGOUT API
+export async function logout() {
+    try {
+        const { data } = await axiosInstance.get(`/api/auth/logout`);
+        return data;
+    } catch (err) {
+        console.error("Logout error:", err?.response?.data || err.message);
+        throw err;
+    }
+}
