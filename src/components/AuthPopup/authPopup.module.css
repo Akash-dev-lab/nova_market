@@ -39,6 +39,7 @@
 	border: none;
 	background: #f3f4f6;
 	cursor: pointer;
+	color: red;
 	font-size: 18px;
 	transition: all 0.2s ease;
 	display: flex;
@@ -47,7 +48,8 @@
 }
 
 .closeBtn:hover {
-	background: #e5e7eb;
+	background: red;
+	color: white;
 	transform: scale(1.08);
 }
 
