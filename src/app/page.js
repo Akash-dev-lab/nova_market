@@ -4,6 +4,7 @@ import Navbar from '../components/navbar/page'
 import AuthPopup from '../components/AuthPopup/AuthPopup'
 import { getCurrentUser } from '../utils/authApi'
 import { getAllProducts } from '../utils/productsApi';
+import { getCart } from '../utils/cartApi';
 import styles from './home.module.css'
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
 	const [loading, setLoading] = useState(true)
 	const [products, setProducts] = useState([]);
 	const [loadingProducts, setLoadingProducts] = useState(true)
+	const [cartProducts, setLoadingCartProducts] = useState(true)
 
 	// ---------- NEW: Fetch Current User ----------
 	useEffect(() => {
@@ -43,6 +45,24 @@ export default function Home() {
 
 		fetchProducts()
 	}, [])
+
+	// ---------- NEW: Fetch Cart ----------
+	useEffect(() => {
+		async function fetchCart() {
+			try {
+				const data = await getCart()
+				// setProducts(data?.products || [])
+			} catch (error) {
+				console.error("Cart error:", error)
+			} finally {
+				setLoadingCartProducts(false)
+			}
+		}
+
+		fetchCart()
+	}, [])
+
+
 	// ------------------------------------------
 
 	const handleProtectedAction = () => {
