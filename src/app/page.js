@@ -35,7 +35,6 @@ export default function Home() {
     async function fetchProducts() {
       try {
         const data = await getAllProducts()
-        console.log(data)
         setProducts(data?.products || [])
       } catch (err) {
         console.error("Products error:", err)

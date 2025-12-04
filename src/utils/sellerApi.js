@@ -1,13 +1,13 @@
-import axios from "axios";
+import axios from "axios";  
 
 const sellerApi = axios.create({
-  baseURL: "http://localhost:3007",
-  withCredentials: true
+  baseURL: "http://localhost:3007/api/seller/dashboard",
+  withCredentials: true,
 });
 
-// ----------------------------
-//  GET SELLER PROFILE
-// ----------------------------
+// --------------------------------------------------
+// GET SELLER PROFILE
+// --------------------------------------------------
 export async function getSellerProfile() {
   try {
     const { data } = await sellerApi.get("/");
@@ -18,9 +18,9 @@ export async function getSellerProfile() {
   }
 }
 
-// ----------------------------
-//  UPDATE SELLER PROFILE
-// ----------------------------
+// --------------------------------------------------
+// UPDATE SELLER PROFILE
+// --------------------------------------------------
 export async function updateSellerProfile(payload) {
   try {
     const { data } = await sellerApi.patch("/", payload);
@@ -31,22 +31,63 @@ export async function updateSellerProfile(payload) {
   }
 }
 
-// ----------------------------
-//  GET ALL SELLER ORDERS
-// ----------------------------
-export async function getSellerOrders() {
+// --------------------------------------------------
+// CREATE PRODUCT (Multipart FormData)
+// --------------------------------------------------
+export async function createProduct(formData) {
   try {
-    const { data } = await sellerApi.get("/orders");
+    const { data } = await sellerApi.post(
+      "/products/create",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true
+      }
+    );
     return data;
   } catch (err) {
-    console.error("Seller ORDERS error:", err?.response?.data || err.message);
+    console.error("Create Product Error:", err?.response?.data || err.message);
     throw err;
   }
 }
 
-// ----------------------------
-//  GET ALL SELLER PRODUCTS
-// ----------------------------
+// --------------------------------------------------
+// UPDATE PRODUCT (Multipart FormData)
+// --------------------------------------------------
+export async function updateProduct(productId, formData) {
+  try {
+    const { data } = await sellerApi.put(
+      `/product/${productId}`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    return data;
+  } catch (err) {
+    console.error("Update Product Error:", err?.response?.data || err.message);
+    throw err;
+  }
+}
+
+// --------------------------------------------------
+// DELETE PRODUCT
+// --------------------------------------------------
+export async function deleteProduct(productId) {
+  try {
+    const { data } = await sellerApi.delete(`/product/${productId}`);
+    return data;
+  } catch (err) {
+    console.error("Delete Product Error:", err?.response?.data || err.message);
+    throw err;
+  }
+}
+
+// --------------------------------------------------
+// GET ALL SELLER PRODUCTS
+// --------------------------------------------------
 export async function getSellerProducts() {
   try {
     const { data } = await sellerApi.get("/products");
@@ -57,13 +98,25 @@ export async function getSellerProducts() {
   }
 }
 
-// ----------------------------
-//  GET SELLER DASHBOARD METRICS
-// ----------------------------
+// --------------------------------------------------
+// GET ALL SELLER ORDERS
+// --------------------------------------------------
+export async function getSellerOrders() {
+  try {
+    const { data } = await sellerApi.get("/orders");
+    return data;
+  } catch (err) {
+    console.error("Seller ORDERS error:", err?.response?.data || err.message);
+    throw err;
+  }
+}
+
+// --------------------------------------------------
+// GET SELLER DASHBOARD METRICS
+// --------------------------------------------------
 export async function getSellerDashboardMetrics() {
   try {
-    const { data } = await sellerApi.get("/api/seller/dashboard/metrics");
-    console.log(data)
+    const { data } = await sellerApi.get("/metrics");
     return data;
   } catch (err) {
     console.error("Seller DASHBOARD error:", err?.response?.data || err.message);
