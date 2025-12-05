@@ -1,15 +1,14 @@
 "use client"
 import { motion } from "framer-motion"
 
-export default function DashboardCard({ title, value, icon, color }) {
+export default function DashboardCard({ title, value, icon, color, onClick, isClickable }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.85 }}
-      animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.05 }}
-      className={`p-6 rounded-3xl bg-gradient-to-br ${color} 
-        backdrop-blur-xl border border-white/10 shadow-xl 
-        flex flex-col gap-3`}
+      onClick={isClickable ? onClick : undefined}
+      className={`p-6 rounded-3xl bg-gradient-to-br ${color}
+      backdrop-blur-xl border border-white/10 shadow-xl 
+      flex flex-col gap-3 cursor-${isClickable ? "pointer" : "default"}`}
+      whileHover={isClickable ? { scale: 1.05 } : {}}
     >
       <div className="text-white/80">{icon}</div>
       <h3 className="text-lg text-gray-300">{title}</h3>

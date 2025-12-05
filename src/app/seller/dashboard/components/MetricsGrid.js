@@ -24,6 +24,9 @@ export default function MetricsGrid({ stats }) {
         title="Products Listed"
         value={stats.totalProducts}
         icon={<Package size={32} />}
+        className="cursor-pointer"
+        isClickable={true}
+        onClick={() => window.location.href = "/seller/products"}
         color="from-green-500/20 to-green-700/10"
       />
 
