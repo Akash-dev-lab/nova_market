@@ -39,14 +39,6 @@ export default function Home() {
     fetchUser()
   }, [])
 
-  // ----- If loading user: -----
-  if (loading) return null
-
-  // 🚫 If seller tries to open home page → show popup only
-  if (showSellerBlock) {
-    return <SellerBlockPopup />
-  }
-
   // ---------- Fetch Products ----------
   useEffect(() => {
     async function fetchProducts() {
@@ -79,6 +71,14 @@ export default function Home() {
 
   const handleProtectedAction = () => {
     if (!user) setShowAuthPopup(true)
+  }
+
+  // ----- If loading user: -----
+  if (loading) return null
+
+  // 🚫 If seller tries to open home page → show popup only
+  if (showSellerBlock) {
+    return <SellerBlockPopup />
   }
 
   return (
@@ -114,8 +114,66 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTION 2 */}
-        {/* SAME AS BEFORE ... */}
+       {/* SECTION 2 */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>50% OFF on Sport Shoes</h2>
+
+          {!loadingProducts && products.length === 0 && (
+            <p className='text-red-500'>
+              Till products are not uploaded by Seller...
+            </p>
+          )}
+
+          <div className={styles.productGrid}>
+            {products.map(product => (
+              <div key={product._id} className={styles.productCard}>
+                <div className={styles.productImage}>
+                  <span className={styles.discount}>50% OFF</span>
+                  {product.Images?.[0]?.url ? (
+                    <img src={product.Images[0].url} alt={product.title} />
+                  ) : null}
+                </div>
+
+                <h3 className={styles.productName}>{product.title}</h3>
+
+                <div className={styles.priceContainer}>
+                  <p className={styles.productPrice}>
+                    ₹{product.price?.amount} {product.price?.currency}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION 3 */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Let's make the combo</h2>
+
+          {!loadingProducts && products.length === 0 && (
+            <p className='text-red-500'>
+              Till products are not uploaded by Seller...
+            </p>
+          )}
+
+          <div className={styles.productGrid}>
+            {products.map(product => (
+              <div key={product._id} className={styles.productCard}>
+                <div className={styles.productImage}>
+                  {product.Images?.[0]?.url ? (
+                    <img src={product.Images[0].url} alt={product.title} />
+                  ) : null}
+                </div>
+
+                <h3 className={styles.productName}>{product.title}</h3>
+
+                <p className={styles.productPrice}>
+                  ₹{product.price?.amount} {product.price?.currency}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
 
       </main>
 
