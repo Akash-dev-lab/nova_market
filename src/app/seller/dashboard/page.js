@@ -61,7 +61,13 @@ export default function SellerDashboard() {
 
       <MetricsGrid stats={stats} />
 
-      <UploadProductBox />
+      <UploadProductBox onProductCreated={() => {
+    setStats(prev => ({
+      ...prev,
+      totalProducts: prev.totalProducts + 1
+    }));
+}} />
+
 
       <RecentOrders orders={stats.orders || []} />
     </div>

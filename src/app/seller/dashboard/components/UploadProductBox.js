@@ -8,7 +8,7 @@ import { createProduct } from "../../../../utils/sellerApi"
 import SuccessPopup from "../components/ui/SuccessPopup"
 import Toast from "../components/ui/Toast"
 
-export default function UploadProductBox() {
+export default function UploadProductBox({ onProductCreated }) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [priceAmount, setPriceAmount] = useState("")
@@ -56,6 +56,9 @@ export default function UploadProductBox() {
       setPriceAmount("")
       setStock("")
       setImages([])
+
+      if (onProductCreated) onProductCreated();
+
 
     } catch (err) {
       console.error(err)
@@ -152,13 +155,12 @@ export default function UploadProductBox() {
             />
 
             <select 
-              className="input bg-black/20" 
+              className="input bg-black/20 cursor-pointer" 
               value={priceCurrency} 
               onChange={e => setPriceCurrency(e.target.value)}
             >
               <option value="INR">INR</option>
               <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
             </select>
 
             <textarea 
