@@ -1,30 +1,41 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-export default function SellerBlockPage() {
-  const [counter, setCounter] = useState(5);
+export default function AccessBlockPopup({
+  title = "Access Denied",
+  message = "You don't have permission to view this page.",
+  buttonText = "Go Back",
+  redirectTo = "/",
+  autoRedirect = false,
+  countdownStart = 5,
+}) {
+  const [counter, setCounter] = useState(countdownStart);
+  const router = useRouter();
 
-  // AUTO REDIRECT (Optional)
+  // Auto Redirect + Countdown (if enabled)
   useEffect(() => {
+    if (!autoRedirect) return;
+
     const timer = setInterval(() => {
       setCounter((c) => (c > 0 ? c - 1 : 0));
     }, 1000);
 
     const redirect = setTimeout(() => {
-      window.location.href = "/seller/dashboard";
-    }, 5000);
+      router.push(redirectTo);
+    }, countdownStart * 1000);
 
     return () => {
       clearInterval(timer);
       clearTimeout(redirect);
     };
-  }, []);
+  }, [autoRedirect, countdownStart, redirectTo, router]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-2xl">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-2xl z-50">
       
-      {/* POPUP CARD */}
       <motion.div
         initial={{ opacity: 0, scale: 0.7, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -34,15 +45,12 @@ export default function SellerBlockPage() {
         border border-white/10 shadow-2xl backdrop-blur-xl
         text-white text-center"
       >
-        {/* Red Warning Icon */}
+
+        {/* Warning Icon */}
         <motion.div
-          initial={{ scale: 0.8 }}
+          initial={{ scale: 0.85 }}
           animate={{ scale: 1.1 }}
-          transition={{
-            repeat: Infinity,
-            repeatType: "reverse",
-            duration: 1.6
-          }}
+          transition={{ repeat: Infinity, repeatType: "reverse", duration: 1.5 }}
           className="mx-auto mb-6 text-red-500"
         >
           <svg width="80" height="80" viewBox="0 0 24 24">
@@ -50,30 +58,34 @@ export default function SellerBlockPage() {
           </svg>
         </motion.div>
 
+        {/* TITLE */}
         <h1 className="text-3xl font-extrabold tracking-wide mb-3">
-          Access Denied
+          {title}
         </h1>
 
+        {/* MESSAGE */}
         <p className="text-gray-300 text-lg leading-relaxed mb-8">
-          You're logged in as a <b>Seller</b>.  
-          To browse this page, please login as a <b>User</b>.
+          {message}
         </p>
 
-        {/* Magnetic Button */}
-        <motion.a
-          href="/seller/dashboard"
-          whileHover={{ scale: 1.08 }}
+        {/* BUTTON */}
+        <motion.button
+          whileHover={{ scale: 1.07 }}
           whileTap={{ scale: 0.96 }}
+          onClick={() => router.push(redirectTo)}
           className="inline-block px-8 py-4 rounded-xl text-lg font-semibold
           bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg
           hover:shadow-purple-500/40 transition-all duration-300"
         >
-          Go to Seller Dashboard →
-        </motion.a>
+          {buttonText}
+        </motion.button>
 
-        <p className="text-gray-400 text-sm mt-6">
-          Redirecting automatically in <b>{counter}</b> seconds...
-        </p>
+        {/* Countdown (only when enabled) */}
+        {autoRedirect && (
+          <p className="text-gray-400 text-sm mt-6">
+            Redirecting automatically in <b>{counter}</b> seconds...
+          </p>
+        )}
       </motion.div>
     </div>
   );

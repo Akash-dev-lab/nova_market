@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../components/navbar/page'
 import AuthPopup from '../components/AuthPopup/AuthPopup'
-import SellerBlockPopup from '../components/SellerBlockPopup/SellerBlockPopup'   // <-- ADD THIS
+import AccessBlockPopup from '../components/SellerBlockPopup/AccessBlockPopup'   // <-- ADD THIS
 import { getCurrentUser } from '../utils/authApi'
 import { getAllProducts } from '../utils/productsApi'
 import { getCart } from '../utils/cartApi'
@@ -12,8 +12,8 @@ export default function Home() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [showAuthPopup, setShowAuthPopup] = useState(false)
-  const [showSellerBlock, setShowSellerBlock] = useState(false)   // <-- NEW STATE
   const [products, setProducts] = useState([])
+   const [showSellerBlock, setShowSellerBlock] = useState(false)
   const [loadingProducts, setLoadingProducts] = useState(true)
   const [loadingCartProducts, setLoadingCartProducts] = useState(true)
 
@@ -25,7 +25,6 @@ export default function Home() {
         const u = userData?.user || userData
         setUser(u)
 
-        // 🚫 BLOCK SELLER FROM HOME PAGE
         if (u?.role === "seller") {
           setShowSellerBlock(true)
         }
@@ -73,12 +72,17 @@ export default function Home() {
     if (!user) setShowAuthPopup(true)
   }
 
-  // ----- If loading user: -----
-  if (loading) return null
-
-  // 🚫 If seller tries to open home page → show popup only
+   // ---------- BLOCK UI FOR SELLER ----------
   if (showSellerBlock) {
-    return <SellerBlockPopup />
+    return (
+      <AccessBlockPopup
+        title="Seller Account Logged In"
+        message="This route is only for customers. Please visit your seller dashboard."
+        buttonText="Go to Seller Dashboard →"
+        redirectTo="/seller/dashboard"
+        autoRedirect={true}
+      />
+    )
   }
 
   return (
