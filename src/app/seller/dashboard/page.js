@@ -7,6 +7,7 @@ import MetricsGrid from "./components/MetricsGrid";
 import UploadProductBox from "./components/UploadProductBox";
 import RecentOrders from "./components/RecentOrders";
 import AccessBlockPopup from "../../../components/SellerBlockPopup/AccessBlockPopup"; 
+import SkeletonLoader from "./components/ui/SkeletonLoader";
 // ⬆️ using your REAL popup with animation + countdown
 
 export default function SellerDashboard() {
@@ -36,12 +37,8 @@ export default function SellerDashboard() {
   }, []);
 
   // Loading state
-  if (loading)
-    return (
-      <div className="min-h-screen flex justify-center items-center text-xl text-white">
-        Loading Dashboard...
-      </div>
-    );
+  if (loading) return <SkeletonLoader />
+
 
   // ⛔ Block normal users — show popup EXACTLY like your example UI
   if (userRole !== "seller") {
