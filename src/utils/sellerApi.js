@@ -59,7 +59,7 @@ export async function createProduct(formData) {
 export async function updateProduct(productId, formData) {
   try {
     const { data } = await sellerApi.put(
-      `/product/${productId}`,
+      `/products/update/${productId}`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -77,7 +77,7 @@ export async function updateProduct(productId, formData) {
 // --------------------------------------------------
 export async function deleteProduct(productId) {
   try {
-    const { data } = await sellerApi.delete(`/product/${productId}`);
+    const { data } = await sellerApi.delete(`/products/delete/${productId}`);
     return data;
   } catch (err) {
     console.error("Delete Product Error:", err?.response?.data || err.message);
@@ -90,13 +90,14 @@ export async function deleteProduct(productId) {
 // --------------------------------------------------
 export async function getSellerProducts() {
   try {
-    const { data } = await sellerApi.get("/products");
+    const { data } = await sellerApi.get("/seller/products");
     return data;
   } catch (err) {
     console.error("Seller PRODUCTS error:", err?.response?.data || err.message);
     throw err;
   }
 }
+
 
 // --------------------------------------------------
 // GET ALL SELLER ORDERS
