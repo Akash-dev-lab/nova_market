@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { getSellerProducts, updateProduct, deleteProduct } from "../../../utils/sellerApi"
 import { Pencil, Trash2 } from "lucide-react"
 import {useToast} from "../dashboard/components/ui/Toast"
+import Loader from "./loader/page"
 
 export default function SellerProductsPage() {
   const [products, setProducts] = useState([])
@@ -67,7 +68,7 @@ export default function SellerProductsPage() {
   if (loading)
     return (
       <div className="min-h-screen flex justify-center items-center text-xl text-white">
-        Loading products...
+        Loading products...<Loader />
       </div>
     )
 
@@ -114,7 +115,7 @@ export default function SellerProductsPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={() => setEditing(product)}
-                  className="flex gap-2 items-center bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl font-semibold shadow-md"
+                  className="flex gap-2 items-center cursor-pointer bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl font-semibold shadow-md"
                 >
                   <Pencil size={18} /> Update
                 </motion.button>
@@ -122,7 +123,7 @@ export default function SellerProductsPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={() => handleDelete(product._id)}
-                  className="flex gap-2 items-center bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl font-semibold shadow-md"
+                  className="flex gap-2 items-center cursor-pointer bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl font-semibold shadow-md"
                 >
                   <Trash2 size={18} /> Delete
                 </motion.button>

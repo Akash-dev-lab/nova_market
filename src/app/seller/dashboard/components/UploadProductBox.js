@@ -3,6 +3,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Upload } from "lucide-react"
 import { createProduct } from "../../../../utils/sellerApi"
+import Loader from '../components/loader/Loader'
 
 // ⭐ NEW IMPORTS
 import SuccessPopup from "../components/ui/SuccessPopup"
@@ -161,9 +162,9 @@ export default function UploadProductBox({ onProductCreated }) {
 
           {/* Submit Button */}
           <button
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl font-semibold hover:scale-[1.03] transition"
+            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 cursor-pointer rounded-xl flex justify-center font-semibold hover:scale-[1.03] transition"
           >
-            {uploading ? "Uploading..." : "Upload Product"}
+            {uploading ? <Loader /> : "Upload Product"}
           </button>
 
         </form>
