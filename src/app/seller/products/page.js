@@ -4,12 +4,13 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { getSellerProducts, updateProduct, deleteProduct } from "../../../utils/sellerApi"
 import { Pencil, Trash2 } from "lucide-react"
-import toast from "../dashboard/components/ui/Toast"
+import {useToast} from "../dashboard/components/ui/Toast"
 
 export default function SellerProductsPage() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(null) // product being edited
+  const toast = useToast();
 
   // --------------------------------------------
   // LOAD SELLER PRODUCTS

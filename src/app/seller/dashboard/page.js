@@ -22,7 +22,16 @@ export default function SellerDashboard() {
 
         // If this succeeds → user is a seller
         setUserRole("seller");
-        setStats(data);
+        const sanitized = {
+          totalSales: Number(data.totalSales) || 0,
+          totalRevenue: Number(data.totalRevenue?.amount || data.totalRevenue || 0),
+          totalProducts: Array.isArray(data.totalProducts) ? data.totalProducts.length : Number(data.totalProducts) || 0,
+          topProduct: Array.isArray(data.topProducts) ? data.topProducts[0] || null : data.topProduct || null,
+          orders: data.orders || []
+      };
+
+      setStats(sanitized);
+
       } catch (err) {
         console.log("Dashboard Error:", err?.response?.data);
 

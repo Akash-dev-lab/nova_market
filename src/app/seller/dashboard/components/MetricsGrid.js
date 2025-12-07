@@ -32,7 +32,7 @@ export default function MetricsGrid({ stats }) {
 
       <DashboardCard
         title="Top Product"
-        value={stats.topProduct?.title || "None"}
+        value={stats.topProduct?.[0]?.title || "None"}
         icon={<BarChart3 size={32} />}
         color="from-pink-500/20 to-pink-700/10"
       />

@@ -6,7 +6,7 @@ import { createProduct } from "../../../../utils/sellerApi"
 
 // ⭐ NEW IMPORTS
 import SuccessPopup from "../components/ui/SuccessPopup"
-import Toast from "../components/ui/Toast"
+import { useToast } from "../components/ui/Toast"
 
 export default function UploadProductBox({ onProductCreated }) {
   const [title, setTitle] = useState("")
@@ -19,7 +19,7 @@ export default function UploadProductBox({ onProductCreated }) {
 
   // ⭐ NEW STATES
   const [showSuccess, setShowSuccess] = useState(false)
-  const [toast, setToast] = useState({ show: false, message: "", type: "" })
+  const toast = useToast();
 
   function handleFiles(e) {
     setImages([...e.target.files])
@@ -29,7 +29,7 @@ export default function UploadProductBox({ onProductCreated }) {
     e.preventDefault()
 
     if (!title || !description || !priceAmount || !stock || images.length === 0) {
-      setToast({ show: true, message: "All fields are required!", type: "error" })
+      toast.error("All fields are required!")
       return
     }
 
@@ -64,11 +64,7 @@ export default function UploadProductBox({ onProductCreated }) {
       console.error(err)
       
       // ⭐ SHOW TOAST ON ERROR
-      setToast({
-        show: true,
-        message: err?.response?.data?.error || "Failed to upload product.",
-        type: "error"
-      })
+      toast.error(err?.response?.data?.error || "Failed to upload product.")
 
     } finally {
       setUploading(false)
@@ -82,15 +78,6 @@ export default function UploadProductBox({ onProductCreated }) {
         <SuccessPopup 
           message="Product created successfully!"
           onClose={() => setShowSuccess(false)}
-        />
-      )}
-
-      {/* ⭐ TOAST */}
-      {toast.show && (
-        <Toast 
-          message={toast.message} 
-          type={toast.type} 
-          onClose={() => setToast({ ...toast, show: false })} 
         />
       )}
 
