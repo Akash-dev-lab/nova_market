@@ -1,78 +1,80 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import Navbar from '../components/navbar/page'
-import AuthPopup from '../components/AuthPopup/AuthPopup'
-import AccessBlockPopup from '../components/SellerBlockPopup/AccessBlockPopup'   // <-- ADD THIS
-import { getCurrentUser } from '../utils/authApi'
-import { getAllProducts } from '../utils/productsApi'
-import { getCart } from '../utils/cartApi'
-import styles from './home.module.css'
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/navbar/page";
+import AuthPopup from "../components/AuthPopup/AuthPopup";
+import AccessBlockPopup from "../components/SellerBlockPopup/AccessBlockPopup";
+
+import { getCurrentUser } from "../utils/authApi";
+import { getAllProducts } from "../utils/productsApi";
+import { getCart } from "../utils/cartApi";
+
+import { CometCard } from "../components/ui/comet-card";   // ⭐ IMPORT COMET CARD
+import styles from "./home.module.css";
 
 export default function Home() {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [showAuthPopup, setShowAuthPopup] = useState(false)
-  const [products, setProducts] = useState([])
-   const [showSellerBlock, setShowSellerBlock] = useState(false)
-  const [loadingProducts, setLoadingProducts] = useState(true)
-  const [loadingCartProducts, setLoadingCartProducts] = useState(true)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [showSellerBlock, setShowSellerBlock] = useState(false);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [loadingCartProducts, setLoadingCartProducts] = useState(true);
 
   // ---------- Fetch User ----------
   useEffect(() => {
     async function fetchUser() {
       try {
-        const userData = await getCurrentUser()
-        const u = userData?.user || userData
-        setUser(u)
+        const userData = await getCurrentUser();
+        const u = userData?.user || userData;
+        setUser(u);
 
         if (u?.role === "seller") {
-          setShowSellerBlock(true)
+          setShowSellerBlock(true);
         }
-
       } catch {
-        setUser(null)
+        setUser(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
-    fetchUser()
-  }, [])
+    fetchUser();
+  }, []);
 
   // ---------- Fetch Products ----------
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const data = await getAllProducts()
-        setProducts(data?.products || [])
+        const data = await getAllProducts();
+        setProducts(data?.products || []);
       } catch (err) {
-        console.error("Products error:", err)
+        console.error("Products error:", err);
       } finally {
-        setLoadingProducts(false)
+        setLoadingProducts(false);
       }
     }
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   // ---------- Fetch Cart ----------
   useEffect(() => {
     async function fetchCart() {
       try {
-        const data = await getCart()
-        console.log(data)
+        const data = await getCart();
+        console.log(data);
       } catch (err) {
-        console.error("Cart error:", err)
+        console.error("Cart error:", err);
       } finally {
-        setLoadingCartProducts(false)
+        setLoadingCartProducts(false);
       }
     }
-    fetchCart()
-  }, [])
+    fetchCart();
+  }, []);
 
   const handleProtectedAction = () => {
-    if (!user) setShowAuthPopup(true)
-  }
+    if (!user) setShowAuthPopup(true);
+  };
 
-   // ---------- BLOCK UI FOR SELLER ----------
+  // ---------- BLOCK UI FOR SELLER ----------
   if (showSellerBlock) {
     return (
       <AccessBlockPopup
@@ -82,7 +84,7 @@ export default function Home() {
         redirectTo="/seller/dashboard"
         autoRedirect={true}
       />
-    )
+    );
   }
 
   return (
@@ -93,99 +95,113 @@ export default function Home() {
 
         {/* SECTION 1 */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Newly Launched By Sellers</h2>
+          <h2 className="text-3xl text-black font-bold mb-6">Newly Launched By Sellers</h2>
 
-          <div className={styles.productGrid}>
-            {!loadingProducts && products.length === 0 ? (
-              <p className="text-red-500">Till products are not uploaded by Seller...</p>
-            ) : (
-              products.map(product => (
-                <div key={product._id} className={styles.productCard}>
-                  <div className={styles.productImage}>
-                    {product.Images?.[0]?.url && (
-                      <img src={product.Images[0].url} alt={product.title} />
-                    )}
-                  </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                  <h3 className={styles.productName}>{product.title}</h3>
+          {products.map((product) => (
+            <CometCard key={product._id} className="p-4 rounded-xl cursor-pointer">
 
-                  <p className={styles.productPrice}>
-                    ₹{product.price?.amount} {product.price?.currency}
-                  </p>
-                </div>
-              ))
-            )}
-          </div>
+              {/* IMAGE */}
+              {product.Images?.[0]?.url && (
+                <img
+                  src={product.Images[0].url}
+                  alt={product.title}
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+              )}
+
+              {/* TITLE */}
+              <h3 className="text-xl font-semibold mb-1">
+                {product.title}
+              </h3>
+
+              {/* PRICE */}
+              <p className="text-lg font-bold text-green-400">
+                ₹{product.price?.amount} {product.price?.currency}
+              </p>
+
+            </CometCard>
+          ))}
+
+        </div>
         </section>
 
-       {/* SECTION 2 */}
+        {/* SECTION 2 */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>50% OFF on Sport Shoes</h2>
+          <h2 className="text-3xl text-black font-bold mb-6">50% OFF on Sport Shoes</h2>
 
-          {!loadingProducts && products.length === 0 && (
-            <p className='text-red-500'>
-              Till products are not uploaded by Seller...
-            </p>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          <div className={styles.productGrid}>
-            {products.map(product => (
-              <div key={product._id} className={styles.productCard}>
-                <div className={styles.productImage}>
-                  <span className={styles.discount}>50% OFF</span>
-                  {product.Images?.[0]?.url ? (
-                    <img src={product.Images[0].url} alt={product.title} />
-                  ) : null}
-                </div>
+          {products.map((product) => (
+            <CometCard key={product._id} className="p-4 rounded-xl cursor-pointer">
 
-                <h3 className={styles.productName}>{product.title}</h3>
+              <span className={styles.discount}>50% OFF</span>
+              {product.Images?.[0]?.url && (
+                <img
+                  src={product.Images[0].url}
+                  alt={product.title}
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+              )}
 
-                <div className={styles.priceContainer}>
-                  <p className={styles.productPrice}>
-                    ₹{product.price?.amount} {product.price?.currency}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+              {/* TITLE */}
+              <h3 className="text-xl font-semibold mb-1">
+                {product.title}
+              </h3>
+
+              {/* PRICE */}
+              <p className="text-lg font-bold text-green-400">
+                ₹{product.price?.amount} {product.price?.currency}
+              </p>
+
+            </CometCard>
+          ))}
+
+        </div>
         </section>
 
         {/* SECTION 3 */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Let's make the combo</h2>
+          <h2 className="text-3xl text-black font-bold mb-6">Let's Make The Combo</h2>
 
-          {!loadingProducts && products.length === 0 && (
-            <p className='text-red-500'>
-              Till products are not uploaded by Seller...
-            </p>
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          <div className={styles.productGrid}>
-            {products.map(product => (
-              <div key={product._id} className={styles.productCard}>
-                <div className={styles.productImage}>
-                  {product.Images?.[0]?.url ? (
-                    <img src={product.Images[0].url} alt={product.title} />
-                  ) : null}
-                </div>
+          {products.map((product) => (
+            <CometCard key={product._id} className="p-4 rounded-xl cursor-pointer">
 
-                <h3 className={styles.productName}>{product.title}</h3>
+              {/* IMAGE */}
+              {product.Images?.[0]?.url && (
+                <img
+                  src={product.Images[0].url}
+                  alt={product.title}
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+              )}
 
-                <p className={styles.productPrice}>
-                  ₹{product.price?.amount} {product.price?.currency}
-                </p>
-              </div>
-            ))}
-          </div>
+              {/* TITLE */}
+              <h3 className="text-xl font-semibold mb-1">
+                {product.title}
+              </h3>
+
+              {/* PRICE */}
+              <p className="text-lg font-bold text-green-400">
+                ₹{product.price?.amount} {product.price?.currency}
+              </p>
+
+            </CometCard>
+          ))}
+
+        </div>
         </section>
-
       </main>
 
+      {/* Bottom Nav */}
       <nav className={styles.bottomNav}>
-        <button className={styles.navBtn} onClick={handleProtectedAction}>🏠</button>
-        <button className={styles.navBtn} onClick={handleProtectedAction}>🛒</button>
-        <button className={styles.navBtn} onClick={handleProtectedAction}>🔔</button>
-        <button className={styles.navBtn} onClick={handleProtectedAction}>👤</button>
+        <button className={styles.navBtn}>🏠</button>
+        <button className={styles.navBtn}>🛒</button>
+        <button className={styles.navBtn}>🔔</button>
+        <button className={styles.navBtn}>👤</button>
       </nav>
 
       <AuthPopup
@@ -194,5 +210,5 @@ export default function Home() {
         message="Please login to access this feature"
       />
     </div>
-  )
+  );
 }

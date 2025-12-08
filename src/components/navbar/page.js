@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { getCurrentUser, logout } from '../../utils/authApi'
 import AuthPopup from '../AuthPopup/AuthPopup'   // <-- added
 import styles from './navbar.module.css'
+import Loader from './logo'
 
 export default function Navbar() {
 	const router = useRouter()
@@ -74,7 +75,7 @@ export default function Navbar() {
 			<header className={styles.header}>
 				<div className={styles.headerContent}>
 					<div className={styles.logo}>
-						<div className={styles.logoCircle}></div>
+						<div><Loader /></div>
 						<span className={styles.logoText}>Nova Market</span>
 					</div>
 
