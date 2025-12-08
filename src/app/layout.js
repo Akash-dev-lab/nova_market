@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { ToastProvider } from "./seller/dashboard/components/ui/Toast";
+import LightRays from "../components/landingPage/LightRays";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,10 +22,25 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen w-full overflow-hidden`}
       >
+        <div className="absolute inset-0 -z-10">
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#00ffff"
+            raysSpeed={1.5}
+            lightSpread={0.8}
+            rayLength={1.2}
+            followMouse={true}
+            mouseInfluence={0.1}
+            noiseAmount={0.1}
+            distortion={0.05}
+          />
+        </div>
         <ToastProvider>
-          {children}
+          <div className="relative z-10">
+            {children}
+          </div>
         </ToastProvider>
       </body>
     </html>

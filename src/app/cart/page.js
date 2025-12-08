@@ -100,7 +100,7 @@ export default function CartPage() {
     : { subTotal: 0, count: 0, totalQuantity: 0 };
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-[#071226] via-[#07142a] to-[#020617] text-white">
+    <div className="min-h-screen p-6 text-white">
       <div className="max-w-6xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: -8 }}

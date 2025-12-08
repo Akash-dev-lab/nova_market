@@ -90,8 +90,8 @@ export default function Home() {
 
   return (
     <>
-    <div className="relative w-full min-h-screen overflow-hidden">
-  <div className="absolute inset-0 -z-10 pointer-events-none">
+    {/* <div className="relative w-full min-h-screen overflow-hidden"> */}
+  {/* <div className="absolute inset-0 -z-10 pointer-events-none">
         <LightRays
           raysOrigin="top-center"
           raysColor="#00ffff"
@@ -103,7 +103,7 @@ export default function Home() {
           noiseAmount={0.1}
           distortion={0.05}
         />
-      </div>
+      </div> */}
 
 
     <div className={styles.container}>
@@ -230,7 +230,7 @@ export default function Home() {
         message="Please login to access this feature"
       />
     </div>
-    </div>
+    {/* </div> */}
     </>
   );
 }
