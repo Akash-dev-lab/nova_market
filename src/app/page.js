@@ -7,6 +7,7 @@ import AccessBlockPopup from "../components/SellerBlockPopup/AccessBlockPopup";
 import { getCurrentUser } from "../utils/authApi";
 import { getAllProducts } from "../utils/productsApi";
 import { getCart } from "../utils/cartApi";
+import LightRays from '../components/landingPage/LightRays';
 
 import { CometCard } from "../components/ui/comet-card";   // ⭐ IMPORT COMET CARD
 import styles from "./home.module.css";
@@ -88,14 +89,31 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container}>
-      <Navbar />
+    <>
+    <div className="relative w-full min-h-screen overflow-hidden">
+  <div className="absolute inset-0 -z-10 pointer-events-none">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#00ffff"
+          raysSpeed={1.5}
+          lightSpread={0.8}
+          rayLength={1.2}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0.1}
+          distortion={0.05}
+        />
+      </div>
 
+
+    <div className={styles.container}>
+
+      <Navbar />
       <main className={styles.main}>
 
         {/* SECTION 1 */}
         <section className={styles.section}>
-          <h2 className="text-3xl text-black font-bold mb-6">Newly Launched By Sellers</h2>
+          <h2 className="text-3xl font-bold mb-6">Newly Launched By Sellers</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -112,9 +130,11 @@ export default function Home() {
               )}
 
               {/* TITLE */}
+              <div className="mr-10">
               <h3 className="text-xl font-semibold mb-1">
                 {product.title}
               </h3>
+              </div>
 
               {/* PRICE */}
               <p className="text-lg font-bold text-green-400">
@@ -129,7 +149,7 @@ export default function Home() {
 
         {/* SECTION 2 */}
         <section className={styles.section}>
-          <h2 className="text-3xl text-black font-bold mb-6">50% OFF on Sport Shoes</h2>
+          <h2 className="text-3xl font-bold mb-6">50% OFF on Sport Shoes</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -146,7 +166,7 @@ export default function Home() {
               )}
 
               {/* TITLE */}
-              <h3 className="text-xl font-semibold mb-1">
+              <h3 className="text-xl text-center font-semibold mb-1">
                 {product.title}
               </h3>
 
@@ -163,7 +183,7 @@ export default function Home() {
 
         {/* SECTION 3 */}
         <section className={styles.section}>
-          <h2 className="text-3xl text-black font-bold mb-6">Let's Make The Combo</h2>
+          <h2 className="text-3xl font-bold mb-6">Let's Make The Combo</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -210,5 +230,7 @@ export default function Home() {
         message="Please login to access this feature"
       />
     </div>
+    </div>
+    </>
   );
 }

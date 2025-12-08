@@ -5,6 +5,7 @@ import { getCurrentUser, logout } from '../../utils/authApi'
 import AuthPopup from '../AuthPopup/AuthPopup'   // <-- added
 import styles from './navbar.module.css'
 import Loader from './logo'
+import { Search, Bell, ShoppingCart } from "lucide-react";
 
 export default function Navbar() {
 	const router = useRouter()
@@ -12,8 +13,9 @@ export default function Navbar() {
 	const [user, setUser] = useState(null)
 	const [showDropdown, setShowDropdown] = useState(false)
 	const [loading, setLoading] = useState(true)
+	const [focused, setFocused] = useState(false);
 
-	const [showAuthPopup, setShowAuthPopup] = useState(false)   // <-- added popup
+	const [showAuthPopup, setShowAuthPopup] = useState(false)
 
 	useEffect(() => {
 		async function fetchUser() {
@@ -79,39 +81,60 @@ export default function Navbar() {
 						<span className={styles.logoText}>Nova Market</span>
 					</div>
 
-					<div className={styles.searchBar}>
-						<input 
-							type="text" 
-							placeholder="Search products..." 
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							className={styles.searchInput}
-						/>
-						<button className={styles.searchBtn}>🔍</button>
+					{/* SEARCH BAR */}
+					<div className="relative w-[45%]">
+						<div
+							className={`
+            flex items-center px-4 py-3 w-full rounded-full bg-white/10 backdrop-blur-lg
+            border transition-all duration-300
+            ${focused ? "border-cyan-400 shadow-[0_0_15px_rgba(0,255,255,0.4)]" : "border-white/20"}
+          `}
+						>
+							<Search className="text-cyan-300 mr-3" />
+							<input
+								type="text"
+								placeholder="Search products..."
+								onFocus={() => setFocused(true)}
+								onBlur={() => setFocused(false)}
+								className="w-full bg-transparent outline-none text-white placeholder-gray-300"
+							/>
+						</div>
+
+						{/* ANIMATED GRADIENT BORDER LINE (A) */}
+						<div className={`
+          absolute inset-0 rounded-full pointer-events-none opacity-70
+          transition-all duration-500
+          ${focused ? "animate-gradient-border" : ""}
+        `}></div>
+
+						{/* MOVING SHINE EFFECT (C) */}
+						{focused && (
+							<span className="absolute inset-0 rounded-full shine-animation pointer-events-none"></span>
+						)}
 					</div>
 
 					<div className={styles.headerIcons}>
-						
+
 						{/* 🔔 NOTIFICATIONS */}
-						<button 
-							className={styles.iconBtn} 
+						<button
+							className={styles.iconBtn}
 							title="Notifications"
 							onClick={() => handleProtectedClick('/notifications')}
 						>
-							🔔
+							<Bell className="w-5 h-5" />
 						</button>
 
 						{/* 🛒 CART */}
-						<button 
-							className={styles.iconBtn} 
+						<button
+							className={styles.iconBtn}
 							title="Cart"
 							onClick={() => handleProtectedClick('/cart')}
 						>
-							🛒
+							<ShoppingCart className="w-5 h-5" />
 						</button>
-						
+
 						<div className={styles.profileContainer}>
-							<button 
+							<button
 								className={styles.profileBtn}
 								onClick={handleProfileClick}
 								title="Profile"
@@ -159,7 +182,7 @@ export default function Navbar() {
 			</header>
 
 			{/* AUTH POPUP */}
-			<AuthPopup 
+			<AuthPopup
 				isOpen={showAuthPopup}
 				onClose={() => setShowAuthPopup(false)}
 				message="Please login to access this feature"
