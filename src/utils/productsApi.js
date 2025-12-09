@@ -16,3 +16,17 @@ export async function getAllProducts() {
         return [];
     }
 }
+
+
+// -----------------------------------------------------
+// ⭐ FETCH SINGLE PRODUCT BY ID
+// -----------------------------------------------------
+export async function getProductById(productId) {
+    try {
+        const { data } = await productsApi.get(`/api/products/${productId}`);
+        return data;
+    } catch (err) {
+        console.error("Product detail fetch error:", err?.response?.data || err.message);
+        return null;
+    }
+}

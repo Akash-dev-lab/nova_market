@@ -1,19 +1,19 @@
 'use client'
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar/page";
 import AuthPopup from "../components/AuthPopup/AuthPopup";
 import AccessBlockPopup from "../components/SellerBlockPopup/AccessBlockPopup";
-
 import { getCurrentUser } from "../utils/authApi";
 import { getAllProducts } from "../utils/productsApi";
 import { getCart } from "../utils/cartApi";
 import LightRays from '../components/landingPage/LightRays';
-
-import { CometCard } from "../components/ui/comet-card";   // ⭐ IMPORT COMET CARD
+import { CometCard } from "../components/ui/comet-card";
 import styles from "./home.module.css";
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const router = useRouter()
   const [loading, setLoading] = useState(true);
   const [showAuthPopup, setShowAuthPopup] = useState(false);
   const [products, setProducts] = useState([]);
@@ -90,22 +90,6 @@ export default function Home() {
 
   return (
     <>
-    {/* <div className="relative w-full min-h-screen overflow-hidden"> */}
-  {/* <div className="absolute inset-0 -z-10 pointer-events-none">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#00ffff"
-          raysSpeed={1.5}
-          lightSpread={0.8}
-          rayLength={1.2}
-          followMouse={true}
-          mouseInfluence={0.1}
-          noiseAmount={0.1}
-          distortion={0.05}
-        />
-      </div> */}
-
-
     <div className={styles.container}>
 
       <Navbar />
@@ -118,7 +102,13 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {products.map((product) => (
-            <CometCard key={product._id} className="p-4 rounded-xl cursor-pointer">
+            <div
+          key={product._id}
+          className="cursor-pointer"
+          onClick={() => router.push(`/product/${product._id}`)}
+        >
+
+           <CometCard className="p-4 rounded-xl">
 
               {/* IMAGE */}
               {product.Images?.[0]?.url && (
@@ -142,6 +132,7 @@ export default function Home() {
               </p>
 
             </CometCard>
+            </div>
           ))}
 
         </div>
@@ -154,7 +145,13 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {products.map((product) => (
-            <CometCard key={product._id} className="p-4 rounded-xl cursor-pointer">
+            <div
+          key={product._id}
+          className="cursor-pointer"
+          onClick={() => router.push(`/product/${product._id}`)}
+        >
+
+           <CometCard className="p-4 rounded-xl">
 
               <span className={styles.discount}>50% OFF</span>
               {product.Images?.[0]?.url && (
@@ -176,6 +173,7 @@ export default function Home() {
               </p>
 
             </CometCard>
+            </div>
           ))}
 
         </div>
@@ -188,7 +186,13 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {products.map((product) => (
-            <CometCard key={product._id} className="p-4 rounded-xl cursor-pointer">
+            <div
+          key={product._id}
+          className="cursor-pointer"
+          onClick={() => router.push(`/product/${product._id}`)}
+        >
+
+           <CometCard className="p-4 rounded-xl">
 
               {/* IMAGE */}
               {product.Images?.[0]?.url && (
@@ -210,6 +214,7 @@ export default function Home() {
               </p>
 
             </CometCard>
+            </div>
           ))}
 
         </div>
