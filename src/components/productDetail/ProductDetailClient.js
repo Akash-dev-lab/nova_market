@@ -1,18 +1,30 @@
-// components/ProductDetailClient.jsx
 "use client"
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star } from "lucide-react"; // optional; or remove if you don't have lucide
-// You can remove lucide import and use inline svgs if needed.
+import { addToCart, getCart } from "../../utils/cartApi";
+import { Star } from "lucide-react";
 
 export default function ProductDetailClient({ product }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
   const router = useRouter();
+  const [cartItems, setCartItems] = useState([]);
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(null); // e.g. color/size object
   const [toast, setToast] = useState(null);
+
+useEffect(() => {
+  async function loadCart() {
+    try {
+      const data = await getCart();
+      setCartItems(data.items || []);
+    } catch (e) {
+      console.log("Cart load error:", e);
+    }
+  }
+  loadCart();
+}, []);
 
   // graceful fallback if product not found
   if (!product) {
@@ -43,7 +55,37 @@ export default function ProductDetailClient({ product }) {
   // Add to cart (example — replace with your cart API)
   const handleAddToCart = async () => {
     try {
-      // Example: call your add-to-cart API here
+
+      const existing = cartItems?.some(
+      (item) => item.productId === product._id
+    );
+
+    if (existing) {
+       const newQty = existing.qty + qty;
+
+      await updateCartItem(product._id, newQty);
+
+      // Update local cart state
+      setCartItems(prev =>
+        prev.map(item =>
+          item.productId === product._id
+            ? { ...item, qty: newQty }
+            : item
+        )
+      );
+
+      setToast({ type: "success", message: `Quantity updated to ${newQty}` });
+      setTimeout(() => setToast(null), 2500);
+
+      return;
+    }
+
+      await addToCart({
+        productId: product._id,
+        qty: qty,
+      });
+
+      setCartItems(prev => [...prev, { productId: product._id, qty }]);
       // await addToCart({ productId: product._id, qty, variant: selectedVariant })
 
       setToast({ type: "success", message: "Added to cart" });
@@ -266,6 +308,16 @@ export default function ProductDetailClient({ product }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* <CartPopup
+  show={popup.show}
+  title={popup.title}
+  message={popup.message}
+  actionText={popup.actionText}
+  actionLink={popup.actionLink}
+  onClose={() => setPopup({ ...popup, show: false })}
+/> */}
+
     </div>
   );
 }

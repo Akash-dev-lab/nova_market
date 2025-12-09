@@ -7,6 +7,17 @@ const cartApi = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// ⭐ ADD TO CART
+export async function addToCart(payload) {
+  try {
+    const { data } = await cartApi.post(`/api/cart/items`, payload);
+    return data;
+  } catch (err) {
+    console.error("Add to Cart Error:", err?.response?.data || err.message);
+    throw err;
+  }
+}
+
 // GET /api/cart
 export async function getCart() {
   try {
@@ -22,7 +33,7 @@ export async function getCart() {
 // PATCH /api/cart/items/:productId  (update quantity)
 export async function updateCartItem(productId, qty) {
   try {
-    const { data } = await cartApi.patch(`/api/cart/items/${productId}`, { qty });
+  const { data } = await cartApi.put(`/api/cart/items/${productId}`, { qty: Number(qty) });
     return data;
   } catch (err) {
     if (err?.response?.data) throw err.response.data;

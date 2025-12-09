@@ -43,10 +43,21 @@ export default function CartPage() {
 
   const handleQtyChange = async (item, newQty) => {
     if (newQty < 1) return;
-    setUpdatingId(item.productId || item._id);
+    const id = item.productId || item._id;
+    setUpdatingId(id);
     try {
-      await updateCartItem(item.productId, newQty);
-      await loadCart();
+      await updateCartItem(id, newQty); 
+      setCartData(prev => ({
+      ...prev,
+      cart: {
+        ...prev.cart,
+        items: prev.cart.items.map(i =>
+          (i.productId === id || i._id === id)
+            ? { ...i, quantity: newQty }
+            : i
+        )
+      }
+    }));
       // toast.success('Quantity updated');
     } catch (err) {
       console.error('Update error', err);
@@ -90,7 +101,8 @@ export default function CartPage() {
   const totals = cartData?.cart
     ? cartData.cart.items.reduce(
         (acc, it) => {
-          acc.subTotal += (it.price || 0) * it.quantity;
+           const priceAmount = Number(it.price?.amount || 0);
+        acc.subTotal += priceAmount * it.quantity;
           acc.count += 1;
           acc.totalQuantity += it.quantity;
           return acc;
@@ -140,7 +152,7 @@ export default function CartPage() {
                       >
                         <div className="w-24 h-24 rounded-md bg-white/5 flex items-center justify-center overflow-hidden">
                           {item.images && item.images.length ? (
-                            <img src={item.images[0]} alt={item.title} className="object-cover w-full h-full" />
+                            <img src={item?.images?.[0]?.url} alt={item.title} className="object-cover w-full h-full" />
                           ) : (
                             <div className="text-xs opacity-60">No image</div>
                           )}
@@ -152,7 +164,7 @@ export default function CartPage() {
                               <div className="font-semibold">{item.title}</div>
                               <div className="text-sm opacity-70">{/* maybe seller or sku */}</div>
                             </div>
-                            <div className="text-lg font-semibold">₹{(item.price || 0).toFixed(2)}</div>
+                            <div className="text-lg font-semibold">₹{(item.price.amount || 0).toFixed(2)}</div>
                           </div>
 
                           <div className="mt-3 flex items-center gap-3">
