@@ -164,7 +164,7 @@ export default function CartPage() {
                               <div className="font-semibold">{item.title}</div>
                               <div className="text-sm opacity-70">{/* maybe seller or sku */}</div>
                             </div>
-                            <div className="text-lg font-semibold">₹{(item.price.amount || 0).toFixed(2)}</div>
+                            <div className="text-lg font-semibold">₹{(item.price?.amount || 0).toFixed(2)}</div>
                           </div>
 
                           <div className="mt-3 flex items-center gap-3">
