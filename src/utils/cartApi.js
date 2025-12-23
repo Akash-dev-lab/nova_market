@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const cartApi = axios.create({
-  baseURL: 'http://localhost:3002',
+  baseURL: 'https://nova-cart-service.onrender.com',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
@@ -33,7 +33,7 @@ export async function getCart() {
 // PATCH /api/cart/items/:productId  (update quantity)
 export async function updateCartItem(productId, qty) {
   try {
-  const { data } = await cartApi.put(`/api/cart/items/${productId}`, { qty: Number(qty) });
+    const { data } = await cartApi.put(`/api/cart/items/${productId}`, { qty: Number(qty) });
     return data;
   } catch (err) {
     if (err?.response?.data) throw err.response.data;

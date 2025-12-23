@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Set axios default baseURL to avoid URL conflicts
 const axiosInstance = axios.create({
-	baseURL: "http://localhost:3001",
+	baseURL: "https://nova-auth-service.onrender.com",
 	withCredentials: true,
 });
 
@@ -52,11 +52,11 @@ export async function getCurrentUser() {
 
 // LOGOUT API
 export async function logout() {
-    try {
-        const { data } = await axiosInstance.get(`/api/auth/logout`);
-        return data;
-    } catch (err) {
-        console.error("Logout error:", err?.response?.data || err.message);
-        throw err;
-    }
+	try {
+		const { data } = await axiosInstance.get(`/api/auth/logout`);
+		return data;
+	} catch (err) {
+		console.error("Logout error:", err?.response?.data || err.message);
+		throw err;
+	}
 }

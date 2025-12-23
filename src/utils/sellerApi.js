@@ -1,7 +1,7 @@
-import axios from "axios";  
+import axios from "axios";
 
 const sellerApi = axios.create({
-  baseURL: "http://localhost:3007/api/seller/dashboard",
+  baseURL: "https://nova-seller-dashboard-service.onrender.com/api/seller/dashboard",
   withCredentials: true,
 });
 

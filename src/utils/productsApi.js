@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create axios instance JUST for product service
 const productsApi = axios.create({
-    baseURL: "http://localhost:3003",
+    baseURL: "https://nova-product-service.onrender.com",
     withCredentials: false, // product service doesn't need auth cookies
 });
 
