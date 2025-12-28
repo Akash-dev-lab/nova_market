@@ -19,7 +19,11 @@ export default function Signup() {
 		try {
 			const data = await register(form)
 			// Redirect to login
-			router.push('/auth/login')
+			if (form.role === 'seller') {
+				router.push('/seller/dashboard')
+			} else {
+				router.push('/')
+			}
 		} catch (err) {
 			setError(err?.response?.data?.message || err.message || 'Signup failed')
 		} finally { setLoading(false) }
@@ -39,12 +43,12 @@ export default function Signup() {
 					<form onSubmit={handleSubmit} className={styles.form}>
 						<div className={styles.formGroup}>
 							<label className={styles.label}>First Name</label>
-							<input 
+							<input
 								type="text"
-								value={form.firstname} 
-								onChange={e=>setForm({...form, firstname:e.target.value})} 
+								value={form.firstname}
+								onChange={e => setForm({ ...form, firstname: e.target.value })}
 								placeholder="Enter your first name"
-								required 
+								required
 								className={styles.input}
 							/>
 						</div>
@@ -52,12 +56,12 @@ export default function Signup() {
 
 						<div className={styles.formGroup}>
 							<label className={styles.label}>Last Name</label>
-							<input 
+							<input
 								type="text"
-								value={form.lastname} 
-								onChange={e=>setForm({...form, lastname:e.target.value})} 
+								value={form.lastname}
+								onChange={e => setForm({ ...form, lastname: e.target.value })}
 								placeholder="Enter your last name"
-								required 
+								required
 								className={styles.input}
 							/>
 						</div>
@@ -65,12 +69,12 @@ export default function Signup() {
 
 						<div className={styles.formGroup}>
 							<label className={styles.label}>Email Address</label>
-							<input 
-								type="email" 
-								value={form.email} 
-								onChange={e=>setForm({...form, email:e.target.value})} 
+							<input
+								type="email"
+								value={form.email}
+								onChange={e => setForm({ ...form, email: e.target.value })}
 								placeholder="Enter your email"
-								required 
+								required
 								className={styles.input}
 							/>
 						</div>
@@ -78,12 +82,12 @@ export default function Signup() {
 
 						<div className={styles.formGroup}>
 							<label className={styles.label}>Password</label>
-							<input 
-								type="password" 
-								value={form.password} 
-								onChange={e=>setForm({...form, password:e.target.value})} 
+							<input
+								type="password"
+								value={form.password}
+								onChange={e => setForm({ ...form, password: e.target.value })}
 								placeholder="Create a strong password"
-								required 
+								required
 								className={styles.input}
 							/>
 						</div>
@@ -91,9 +95,9 @@ export default function Signup() {
 
 						<div className={styles.formGroup}>
 							<label className={styles.label}>Join As</label>
-							<select 
-								value={form.role} 
-								onChange={e=>setForm({...form, role:e.target.value})}
+							<select
+								value={form.role}
+								onChange={e => setForm({ ...form, role: e.target.value })}
 								className={styles.select}
 							>
 								<option value="user">Buyer</option>
@@ -105,8 +109,8 @@ export default function Signup() {
 						{error && <div className={styles.error}>{error}</div>}
 
 
-						<button 
-							type="submit" 
+						<button
+							type="submit"
 							disabled={loading}
 							className={styles.submitBtn}
 						>
