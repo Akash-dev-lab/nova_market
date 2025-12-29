@@ -2,6 +2,14 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
+  async rewrites() {
+    return [
+      {
+        source: '/api/proxy/:path*',
+        destination: 'https://nova-auth-service.onrender.com/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

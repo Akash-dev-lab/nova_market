@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Set axios default baseURL to avoid URL conflicts
 const axiosInstance = axios.create({
-	baseURL: "https://nova-auth-service.onrender.com",
+	baseURL: "/api/proxy",
 	withCredentials: true,
 });
 
